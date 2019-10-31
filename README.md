@@ -26,7 +26,7 @@ https://www.lastline.com/solutions/analyst/
 
    ```openssl req -newkey rsa:2048 -nodes -keyout key.pem -x509 -days 365 -out certificate.pem```
 
-2. Change the PATH to the the new generated Web Server Certificates (line 20 in tie_file_retriever_multi.py)
+2. Change the PATH to the the new generated Web Server Certificates (line 20 in tie_file_retriever.py)
 
 3. For ATD submission: Change the ATD IP, Username, Password and ProfileID (line 12 - 15 in atd.py)
 
@@ -57,9 +57,9 @@ https://www.lastline.com/solutions/analyst/
 
    Make sure that the FULL PATH to the dxlclient.config file is entered in line 17 (lastline.py).
    
-5. To submit files from TIE to the multi-sandbox service change the IP, Username and Password in ePO to point to the new created service.
+5. To submit files from TIE to the multi-sandbox service change the IP, Username and Password (aligned to the username and password in tie_file_retriever.py line 22 and 23) in ePO to point to the new created service. Also make sure that the polling target in the polling settings is set to None!
 
-   
+   <img width="1440" alt="Screenshot 2019-10-31 at 13 26 12" src="https://user-images.githubusercontent.com/25227268/67946645-0ebda100-fbe2-11e9-9ae3-8b4e33f3c72e.png">
    
 ## Execution
 
