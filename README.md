@@ -1,7 +1,7 @@
 # McAfee TIE multi-sandbox integration
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-This integration allows you to submit files from McAfee TIE to multiple sandboxes which allows better threat validation.
+This integration allows you to submit files from McAfee Threat Intelligence Exchange (TIE) to multiple sandboxes which allows better threat validation.
 
 TIE by default is able to submit files to McAfee Advanced Threat Defense (ATD) for file analysis only.
 McAfee TIE acts as a hash repository with multiple reputation information. As soon an Endpoint executes an unknown file, TIE will automatically receive the file from the endpoint for file analysis and submit this file to ATD.
