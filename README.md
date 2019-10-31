@@ -36,7 +36,7 @@ https://www.lastline.com/solutions/analyst/
 
    <img width="399" alt="Screenshot 2019-10-31 at 13 10 36" src="https://user-images.githubusercontent.com/25227268/67945706-dddc6c80-fbdf-11e9-98af-4f37a06e9b4a.png">
    
-   To update the TIE External Reputation install the McAfee DXL Client and DXL TIE Client libraries.
+   To update the TIE External Reputation with the Lastline analysis results - install the McAfee DXL Client and DXL TIE Client libraries.
    
    OpenDXL SDK ([Link](https://github.com/opendxl/opendxl-client-python))
    ```sh
@@ -56,3 +56,10 @@ https://www.lastline.com/solutions/analyst/
    ([Link].(https://opendxl.github.io/opendxl-tie-client-python/pydoc/basicsetreputationexample.html)).
 
    Make sure that the FULL PATH to the dxlclient.config file is entered in line 17 (lastline.py).
+   
+### Execution
+
+run the script 
+```sh
+python3.8 tie_file_retriever_multi.py
+```
