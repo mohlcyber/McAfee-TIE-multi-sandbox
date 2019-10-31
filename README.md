@@ -11,6 +11,8 @@ This integration simulates the McAfee ATD API's, receives the file from McAfee T
 The different sandbox results will update TIE via ATD Reputation and External/Enterprise reputation.
 Adding multiple third party sandboxes would require a reputation calculation.
 
+<img width="1126" alt="Screenshot 2019-10-31 at 14 33 00" src="https://user-images.githubusercontent.com/25227268/67951221-614f8b00-fbeb-11e9-8ae8-03c4058a9d49.png">
+
 ## Component Description
 **McAfee Threat Intelligence Exchange (TIE)** acts as a reputation broker to enable adaptive
 threat detection and response. https://www.mcafee.com/enterprise/en-us/products/threat-intelligence-exchange.html
