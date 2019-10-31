@@ -21,7 +21,7 @@ https://www.mcafee.com/in/products/advanced-threat-defense.aspx
 **Lastline Analyst** provides threat analysts and incident response teams with the advanced malware inspection and isolation environment they need to safely execute advanced malware samples and understand their behavior. 
 https://www.lastline.com/solutions/analyst/
 
-## Prerequisites
+## Configuration
 1. Create Web Server Certificates for TLS. e.g.
 
    ```openssl req -newkey rsa:2048 -nodes -keyout key.pem -x509 -days 365 -out certificate.pem```
@@ -56,6 +56,10 @@ https://www.lastline.com/solutions/analyst/
    ([Link].(https://opendxl.github.io/opendxl-tie-client-python/pydoc/basicsetreputationexample.html)).
 
    Make sure that the FULL PATH to the dxlclient.config file is entered in line 17 (lastline.py).
+   
+5. To submit files from TIE to the multi-sandbox service change the IP, Username and Password in ePO to point to the new created service.
+
+   
    
 ## Execution
 
