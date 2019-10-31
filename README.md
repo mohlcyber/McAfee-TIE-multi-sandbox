@@ -54,8 +54,8 @@ https://www.lastline.com/solutions/analyst/
    python setup.py install
    ```
    
-   Make sure to authorize the new created certificates in ePO to set McAfee TIE Reputations 
-   ([Link].(https://opendxl.github.io/opendxl-tie-client-python/pydoc/basicsetreputationexample.html)).
+   Make sure to authorize the new created certificates in ePO to set McAfee TIE Reputations. 
+   https://opendxl.github.io/opendxl-tie-client-python/pydoc/basicsetreputationexample.html
 
    Make sure that the FULL PATH to the dxlclient.config file is entered in line 17 (lastline.py).
    
