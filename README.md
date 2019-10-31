@@ -1,4 +1,4 @@
-# McAfee TIE Multisandbox integration
+# McAfee TIE multi-sandbox integration
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 This integration allows you to submit files from McAfee TIE to multiple sandboxes.
