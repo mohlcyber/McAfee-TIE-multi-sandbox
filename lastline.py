@@ -160,7 +160,9 @@ class LASTLINE:
 
                 print("LASTLINE RESULT: File Score is {0}.".format(str(score)))
                 print("LASTLINE STATUS: Trying to set DXL External Reputation.")
-                TIE().set_rep(self.filename, self._map_level(score), md5, sha1, sha256)
+                TIE().set_rep(
+                    self.filename, self._map_level(score), md5, sha1, sha256, "Lastline"
+                )
             else:
                 print(
                     "LASTLINE ERROR: Something went wrong in {0}. Error: {1}".format(

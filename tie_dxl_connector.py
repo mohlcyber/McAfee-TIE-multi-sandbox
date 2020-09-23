@@ -1,5 +1,6 @@
 import os
 import sys
+import logging
 
 from dxlclient.client import DxlClient
 from dxlclient.client_config import DxlClientConfig
@@ -17,7 +18,7 @@ class TIE:
             os.getenv("DXL_CONNECTOR_CLIENT_CONFIG_PATH")
         )
 
-    def set_rep(self, filename, level, md5, sha1, sha256):
+    def set_rep(self, filename, level, md5, sha1, sha256, sandbox):
         try:
             with DxlClient(self.config) as client:
                 client.connect()
@@ -27,22 +28,19 @@ class TIE:
                     level,
                     {"md5": md5, "sha1:": sha1, "sha256": sha256},
                     filename=filename,
-                    comment="External Reputation set from Lastline",
+                    comment="External Reputation set from {}".format(sandbox),
                 )
 
-                print(
-                    "LASTLINE SUCCESS: Set reputation in TIE for MD5 {0}.".format(
-                        str(md5)
-                    )
+                logging.info(
+                    "SUCCESS setting the reputation in TIE for MD5 %s using sandbox %s",
+                    str(md5),
+                    sandbox,
                 )
 
         except Exception as e:
-            exc_type, exc_obj, exc_tb = sys.exc_info()
-            print(
-                "ERROR: Error in {location}.{funct_name}() - line {line_no} : {error}".format(
-                    location=__name__,
-                    funct_name=sys._getframe().f_code.co_name,
-                    line_no=exc_tb.tb_lineno,
-                    error=str(e),
-                )
+            logging.error(
+                "ERROR setting the reputation in TIE for MD5 %s using sandbox %s: %s",
+                str(md5),
+                sandbox,
+                e,
             )

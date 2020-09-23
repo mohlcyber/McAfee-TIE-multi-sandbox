@@ -2,6 +2,7 @@
 # Written by mohlcyber 31/10/2019 v.0.1
 
 import os
+import sys
 import ssl
 import base64
 import json
@@ -11,15 +12,20 @@ import socket
 import threading
 import time
 import hashlib
+import logging
 
 from lastline import LASTLINE
 from atd import ATD
+from vmray_sandbox import VMRAY
 
 from http.server import HTTPServer, BaseHTTPRequestHandler
 
 from dotenv import load_dotenv
 
 load_dotenv(verbose=True)
+
+
+DEFAULT_LOG_LEVEL = "INFO"
 
 CREDS = base64.b64encode((os.getenv("TIE_USER") + ":" + os.getenv("TIE_PW")).encode())
 
@@ -137,7 +143,13 @@ class Handler(BaseHTTPRequestHandler):
 
             # Multi Sandbox Submission
             thread_list = []
-            sandboxes = [ATD, LASTLINE]
+            sandboxes = []
+            if os.getenv("ATD_ENABLED") == "true":
+                sandboxes.append(ATD)
+            if os.getenv("LASTLINE_ENABLED") == "true":
+                sandboxes.append(LASTLINE)
+            if os.getenv("VMRAY_ENABLED") == "true":
+                sandboxes.append(VMRAY)
 
             for sandbox in sandboxes:
                 thread = threading.Thread(
@@ -189,6 +201,23 @@ class Thread(threading.Thread):
 
 
 if __name__ == "__main__":
+    # initialize the logger
+    log_level = os.getenv("LOG_LEVEL")
+    if log_level is None:
+        log_level = DEFAULT_LOG_LEVEL
+    logging.getLogger().setLevel(level=logging.getLevelName(log_level))
+    formatter = logging.Formatter(
+        fmt="%(asctime)s.%(msecs)03d [%(levelname)s] %(message)s",
+        datefmt="%Y-%m-%d %H:%M:%S",
+    )
+    stream_handler = logging.StreamHandler(sys.stdout)
+    stream_handler.setFormatter(formatter)
+    logging.getLogger().addHandler(stream_handler)
+    file_handler = logging.FileHandler(os.getenv("LOG_FILE_PATH"))
+    file_handler.setFormatter(formatter)
+    logging.getLogger().addHandler(file_handler)
+
+    # set up the server
     addr = ("", int(os.getenv("TIE_FILE_RETRIEVER_PORT")))
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
