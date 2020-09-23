@@ -229,6 +229,7 @@ if __name__ == "__main__":
         certfile=os.getenv("TIE_CERTIFICATE_PATH"),
         server_side=True,
     )
+    logging.info("TIE File Retriever server has been started")
 
     for i in range(10):
         Thread(i)
