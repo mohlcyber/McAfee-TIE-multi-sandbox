@@ -6,10 +6,8 @@ import os
 import time
 import requests
 
-from dxlclient.client import DxlClient
-from dxlclient.client_config import DxlClientConfig
-from dxltieclient import TieClient
 from dxltieclient.constants import TrustLevel
+from tie_dxl_connector import TIE
 
 from dotenv import load_dotenv
 
@@ -162,7 +160,7 @@ class LASTLINE:
 
                 print("LASTLINE RESULT: File Score is {0}.".format(str(score)))
                 print("LASTLINE STATUS: Trying to set DXL External Reputation.")
-                TIE().set_rep(self.filename, score, md5, sha1, sha256)
+                TIE().set_rep(self.filename, self._map_level(score), md5, sha1, sha256)
             else:
                 print(
                     "LASTLINE ERROR: Something went wrong in {0}. Error: {1}".format(
@@ -181,6 +179,15 @@ class LASTLINE:
                 )
             )
             sys.exit()
+
+    def _map_level(self, score):
+        if score < 30:
+            level = TrustLevel.MIGHT_BE_TRUSTED
+        elif score >= 30 or score < 70:
+            level = TrustLevel.MOST_LIKELY_MALICIOUS
+        else:
+            level = TrustLevel.KNOWN_MALICIOUS
+        return level
 
     def logout(self):
         try:
@@ -217,50 +224,6 @@ class LASTLINE:
         self.get_status()
         self.get_result()
         self.logout()
-
-
-class TIE:
-    def __init__(self):
-        self.config = DxlClientConfig.create_dxl_config_from_file(
-            os.getenv("DXL_CONFIG")
-        )
-
-    def set_rep(self, filename, score, md5, sha1, sha256):
-        if score < 30:
-            level = TrustLevel.MIGHT_BE_TRUSTED
-        elif score >= 30 or score < 70:
-            level = TrustLevel.MOST_LIKELY_MALICIOUS
-        else:
-            level = TrustLevel.KNOWN_MALICIOUS
-
-        try:
-            with DxlClient(self.config) as client:
-                client.connect()
-                tie_client = TieClient(client)
-
-                tie_client.set_external_file_reputation(
-                    level,
-                    {"md5": md5, "sha1:": sha1, "sha256": sha256},
-                    filename=filename,
-                    comment="External Reputation set from Lastline",
-                )
-
-                print(
-                    "LASTLINE SUCCESS: Set reputation in TIE for MD5 {0}.".format(
-                        str(md5)
-                    )
-                )
-
-        except Exception as e:
-            exc_type, exc_obj, exc_tb = sys.exc_info()
-            print(
-                "ERROR: Error in {location}.{funct_name}() - line {line_no} : {error}".format(
-                    location=__name__,
-                    funct_name=sys._getframe().f_code.co_name,
-                    line_no=exc_tb.tb_lineno,
-                    error=str(e),
-                )
-            )
 
 
 if __name__ == "__main__":
