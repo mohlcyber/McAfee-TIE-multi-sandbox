@@ -17,77 +17,82 @@ from atd import ATD
 
 from http.server import HTTPServer, BaseHTTPRequestHandler
 
-PATH = '/home/certs/'
+from dotenv import load_dotenv
 
-USER = 'admin'
-PW = 'McAfee123!'
-CREDS = base64.b64encode((USER + ':' + PW).encode())
+load_dotenv(verbose=True)
+
+CREDS = base64.b64encode((os.getenv("TIE_USER") + ":" + os.getenv("TIE_PW")).encode())
 
 SESSION_TOKEN = secrets.token_hex(13)
-SESSION_USER_ID = '1'
-SESSION_CREDS = base64.b64encode((SESSION_TOKEN + ':' + SESSION_USER_ID).encode())
+SESSION_USER_ID = "1"
+SESSION_CREDS = base64.b64encode((SESSION_TOKEN + ":" + SESSION_USER_ID).encode())
 
 
 class Handler(BaseHTTPRequestHandler):
-
     def do_AUTHHEAD(self):
         self.send_response(401)
-        self.send_header('VE-SDK-API', 'Basic realm=\"TOKEN\"')
-        self.send_header('Content-type', 'application/json')
+        self.send_header("VE-SDK-API", 'Basic realm="TOKEN"')
+        self.send_header("Content-type", "application/json")
         self.end_headers()
 
     def do_GET(self):
-        if self.path == '/php/session.php':
-            if self.headers.get('VE-SDK-API'):
-                if self.headers.get('VE-SDK-API') == CREDS.decode():
+        if self.path == "/php/session.php":
+            if self.headers.get("VE-SDK-API"):
+                if self.headers.get("VE-SDK-API") == CREDS.decode():
                     self.send_response(200)
-                    self.send_header('Content-type', 'application/json')
+                    self.send_header("Content-type", "application/json")
                     self.end_headers()
                     payload = {
-                        'success': True,
-                        'results': {
-                            'session': SESSION_TOKEN,
-                            'userId': '1',
-                            'isAdmin': '1',
-                            'serverTZ': 'CEST',
-                            'apiVersion': '1.5.0',
-                            'matdVersion': '4.6.2.13'
-                        }
+                        "success": True,
+                        "results": {
+                            "session": SESSION_TOKEN,
+                            "userId": "1",
+                            "isAdmin": "1",
+                            "serverTZ": "CEST",
+                            "apiVersion": "1.5.0",
+                            "matdVersion": "4.6.2.13",
+                        },
                     }
 
                     self.wfile.write(json.dumps(payload).encode())
                     pass
                 else:
                     self.do_AUTHHEAD()
-                    self.wfile.write('ERROR: {0} not authenticated'.format(self.headers.get('VE-SDK-API')).encode())
+                    self.wfile.write(
+                        "ERROR: {0} not authenticated".format(
+                            self.headers.get("VE-SDK-API")
+                        ).encode()
+                    )
                     pass
             else:
                 self.do_AUTHHEAD()
-                self.wfile.write('ERROR: No auth header received'.encode())
+                self.wfile.write("ERROR: No auth header received".encode())
                 pass
         else:
             self.do_AUTHHEAD()
-            self.wfile.write('ERROR: Wrong path to authenticate'.encode())
+            self.wfile.write("ERROR: Wrong path to authenticate".encode())
             pass
 
     def do_POST(self):
-        content_length = int(self.headers['Content-Length'])
-        if self.headers.get('VE-SDK-API') == SESSION_CREDS.decode():
+        content_length = int(self.headers["Content-Length"])
+        if self.headers.get("VE-SDK-API") == SESSION_CREDS.decode():
             self.send_response(200)
             self.end_headers()
 
             form = cgi.FieldStorage(
                 fp=self.rfile,
                 headers=self.headers,
-                environ={'REQUEST_METHOD': 'POST',
-                         'CONTENT_TYPE': self.headers['Content-Type'],
-                         })
-            filename = 'SAMPLE'
+                environ={
+                    "REQUEST_METHOD": "POST",
+                    "CONTENT_TYPE": self.headers["Content-Type"],
+                },
+            )
+            filename = "SAMPLE"
             for item in form.list:
                 if item.filename:
                     filename = item.filename
 
-            data = form.getvalue('amas_filename')
+            data = form.getvalue("amas_filename")
             open(filename, "wb").write(data)
 
             self.send_response(200)
@@ -102,28 +107,28 @@ class Handler(BaseHTTPRequestHandler):
             os.remove(filename)
 
             payload = {
-                'success': True,
-                'subId': 123456789,
-                'mimeType': 'application/x-dosexec',
-                'fileId': '',
-                'filesWait': 0,
-                'estimatedTime': 0,
-                'results': [
+                "success": True,
+                "subId": 123456789,
+                "mimeType": "application/x-dosexec",
+                "fileId": "",
+                "filesWait": 0,
+                "estimatedTime": 0,
+                "results": [
                     {
-                        'taskId': 123456789,
-                        'messageId': '',
-                        'file': filename,
-                        'submitType': '0',
-                        'url': '',
-                        'destIp': None,
-                        'srcIp': '',
-                        'md5': md5,
-                        'sha1': sha1,
-                        'sha256': sha256,
-                        'size': size,
-                        'cache': 0
+                        "taskId": 123456789,
+                        "messageId": "",
+                        "file": filename,
+                        "submitType": "0",
+                        "url": "",
+                        "destIp": None,
+                        "srcIp": "",
+                        "md5": md5,
+                        "sha1": sha1,
+                        "sha256": sha256,
+                        "size": size,
+                        "cache": 0,
                     }
-                ]
+                ],
             }
 
             self.wfile.write(json.dumps(payload).encode())
@@ -135,7 +140,14 @@ class Handler(BaseHTTPRequestHandler):
             sandboxes = [ATD, LASTLINE]
 
             for sandbox in sandboxes:
-                thread = threading.Thread(target=self.multi_sandbox, args=(sandbox, filename, data, ))
+                thread = threading.Thread(
+                    target=self.multi_sandbox,
+                    args=(
+                        sandbox,
+                        filename,
+                        data,
+                    ),
+                )
                 thread_list.append(thread)
                 thread.start()
 
@@ -145,14 +157,18 @@ class Handler(BaseHTTPRequestHandler):
 
         else:
             self.do_AUTHHEAD()
-            self.wfile.write('ERROR: {0} not authenticated'.format(self.headers.get('VE-SDK-API')).encode())
+            self.wfile.write(
+                "ERROR: {0} not authenticated".format(
+                    self.headers.get("VE-SDK-API")
+                ).encode()
+            )
             pass
 
     def do_DELETE(self):
         self.send_response(200)
-        self.send_header('Content-type', 'application/json')
+        self.send_header("Content-type", "application/json")
         self.end_headers()
-        self.wfile.write('SUCCESS: Logout'.encode())
+        self.wfile.write("SUCCESS: Logout".encode())
 
     def multi_sandbox(self, module, filename, data):
         module(filename, data).run()
@@ -164,6 +180,7 @@ class Thread(threading.Thread):
         self.i = i
         self.daemon = True
         self.start()
+
     def run(self):
         httpd = HTTPServer(addr, Handler, False)
         httpd.socket = sock
@@ -171,13 +188,18 @@ class Thread(threading.Thread):
         httpd.serve_forever()
 
 
-if __name__ == '__main__':
-    addr = ('', 443)
+if __name__ == "__main__":
+    addr = ("", int(os.getenv("TIE_FILE_RETRIEVER_PORT")))
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     sock.bind(addr)
     sock.listen(5)
-    sock = ssl.wrap_socket(sock, keyfile=PATH + 'key.pem', certfile=PATH + 'certificate.pem', server_side=True)
+    sock = ssl.wrap_socket(
+        sock,
+        keyfile=os.getenv("TIE_KEY_PATH"),
+        certfile=os.getenv("TIE_CERTIFICATE_PATH"),
+        server_side=True,
+    )
 
     for i in range(10):
         Thread(i)
