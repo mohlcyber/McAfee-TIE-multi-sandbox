@@ -40,13 +40,14 @@ class VMRAY:
             open(self.filename, "wb").write(self.filedata)
             params = {"sample_file": self.filename, "reanalyze": True}
             data = self.api_client.call("POST", "/rest/sample/submit", params)
-            os.remove(self.filename)
             return data["submissions"]
         except VMRayRESTAPIError as e:
             logging.error(
                 "Encountered an error during the submission of %s: %s", self.filename, e
             )
             sys.exit()
+        finally:
+            os.remove(self.filename)
 
     def _wait_for_submissions(self, submissions):
         """
