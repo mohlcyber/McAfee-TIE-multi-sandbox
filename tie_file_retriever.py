@@ -207,7 +207,7 @@ if __name__ == "__main__":
         log_level = DEFAULT_LOG_LEVEL
     logging.getLogger().setLevel(level=logging.getLevelName(log_level))
     formatter = logging.Formatter(
-        fmt="%(asctime)s.%(msecs)03d [%(levelname)s] %(message)s",
+        fmt="%(asctime)s.%(msecs)03d [%(levelname)s] %(message)s (%(filename)s:%(lineno)d)",
         datefmt="%Y-%m-%d %H:%M:%S",
     )
     stream_handler = logging.StreamHandler(sys.stdout)
