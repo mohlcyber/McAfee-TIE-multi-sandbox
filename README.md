@@ -51,8 +51,9 @@ The configuration consists of [one-time setup steps](#one-time-setup) and of the
       1) Download the API client from the knowledge center, extract it in the current folder
       1) ```pip install vmray_rest_api-x.y.z.zip```
 
-1) Configure all [environment variables](#environment-variables)
+1) Make sure to authorize the new created certificates in ePO to set McAfee TIE Reputations. https://opendxl.github.io/opendxl-tie-client-python/pydoc/basicsetreputationexample.html
 
+1) Configure all [environment variables](#environment-variables)
    
 1) To submit files from TIE to the multi-sandbox service change the IP, Username and Password (aligned to the TIE username and password configured using the [environment variables](#environment-variables)) in ePO to point to the new created service. **Also make sure that the polling target in the polling settings is set to None!**
 
