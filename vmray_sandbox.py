@@ -38,9 +38,10 @@ class VMRAY:
         try:
             logging.info("Submitting file %s to VMRay", self.filename)
             open(self.filename, "wb").write(self.filedata)
-            params = {"sample_file": self.filename, "reanalyze": True}
-            data = self.api_client.call("POST", "/rest/sample/submit", params)
-            return data["submissions"]
+            with open(self.filename, "rb") as sample_file:
+                params = {"sample_file": sample_file, "reanalyze": True}
+                data = self.api_client.call("POST", "/rest/sample/submit", params)
+                return data["submissions"]
         except VMRayRESTAPIError as e:
             logging.error(
                 "Encountered an error during the submission of %s: %s", self.filename, e
