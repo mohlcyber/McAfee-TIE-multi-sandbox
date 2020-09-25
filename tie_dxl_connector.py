@@ -26,8 +26,9 @@ class TIE:
             comment="External Reputation set from {}".format(sandbox),
         )
         logging.info(
-            "SUCCESS setting the reputation in TIE for MD5 %s using sandbox %s",
-            str(md5),
+            "SUCCESS setting the reputation in TIE for SHA256 %s to level %s using sandbox %s",
+            str(sha256),
+            str(level),
             sandbox,
         )
 
@@ -64,8 +65,8 @@ class TIE:
 
         except Exception as e:
             logging.error(
-                "ERROR setting the reputation in TIE for MD5 %s using sandbox %s: %s",
-                str(md5),
+                "ERROR setting the reputation in TIE for SHA256 %s using sandbox %s: %s",
+                str(sha256),
                 sandbox,
                 e,
             )
