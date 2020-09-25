@@ -82,7 +82,7 @@ class VMRAY:
 
     def _push_result(self, submissions):
         """
-        Push the results back to TUE using the DXL client.
+        Push the results back to TIE using the DXL client.
         :param submissions: A list of submissions that has been created as a result of the _submit_file operation
         """
         logging.debug("Trying to set DXL External Reputation for VMRay results.")
