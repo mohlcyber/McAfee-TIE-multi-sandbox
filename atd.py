@@ -24,7 +24,12 @@ class ATD:
         self.headers = self._auth(creds)
 
         self.profile = os.getenv("ATD_PROFILE")
-        self.timeout = int(os.getenv("ATD_TIMEOUT"))
+        if self.profile is None:
+            self.profile = "1"
+        timeout = os.getenv("ATD_TIMEOUT")
+        if timeout is None:
+            timeout = 600
+        self.timeout = int(timeout)
 
         self.filename = filename
         self.data = data

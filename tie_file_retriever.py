@@ -213,7 +213,10 @@ if __name__ == "__main__":
     stream_handler = logging.StreamHandler(sys.stdout)
     stream_handler.setFormatter(formatter)
     logging.getLogger().addHandler(stream_handler)
-    file_handler = logging.FileHandler(os.getenv("LOG_FILE_PATH"))
+    log_file_path = os.getenv("LOG_FILE_PATH")
+    if log_file_path is None:
+        log_file_path = "tie_retriever.log"
+    file_handler = logging.FileHandler(log_file_path)
     file_handler.setFormatter(formatter)
     logging.getLogger().addHandler(file_handler)
 

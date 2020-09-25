@@ -75,7 +75,7 @@ The available variables are:
 | TIE_KEY_PATH | TIE |  The full path to the key to be used to secure connections to this script using TLS |  |
 | TIE_FILE_RETRIEVER_PORT | TIE | The port to which this script shall be bound |  |
 |  |  |  |
-| ATD_ENABLED | ATD | Whether ATD is enabled  | true |
+| ATD_ENABLED | ATD | Whether ATD is enabled  | false |
 | ATD_IP | ATD | The IP (and port if necessary) of the ATD instance |  |
 | ATD_USER | ATD | The ATD username |  |
 | ATD_PW | ATD | The ATD password |  |
@@ -84,13 +84,13 @@ The available variables are:
 |  |  |  |
 | DXL_CONNECTOR_CLIENT_CONFIG_PATH | TIE DXL Connector | The full path to the *dxlclient.config* file |   |
 |  |  |  |
-| LASTLINE_ENABLE | Lastline | Whether this sandbox is enabled | true |
-| LASTLINE_URL | Lastline | The URL of the Lastline Analyst instance | https://user.lastline.com/papi |
+| LASTLINE_ENABLE | Lastline | Whether this sandbox is enabled | false |
+| LASTLINE_URL | Lastline | The URL of the Lastline Analyst instance | |
 | LASTLINE_USER | Lastline | The Lastline username |  |
 | LASTLINE_PW | Lastline | The passwort corresponding to the Lastline username |  |
 |  |  |  |
-| VMRAY_ENABLED | VMRay | Whether this sandbox is enabled | true |
-| VMRAY_URL | VMRay | The URL of the VMRay Platform instance | https://eu.cloud.vmray.com |
+| VMRAY_ENABLED | VMRay | Whether this sandbox is enabled | false |
+| VMRAY_URL | VMRay | The URL of the VMRay Platform instance | |
 | VMRAY_API_KEY | VMRay | The API key to be used for the queries |  |
 | VMRAY_VERIFY_CERT | VMRay | Whether the certificate shall be validated | true |
 | VMRAY_SLEEP_INTERVAL | VMRay | The amount of time for which the script will sleep between consecutive result queries for a submission | 1 |
