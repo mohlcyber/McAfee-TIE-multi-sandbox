@@ -19,12 +19,14 @@ class TIE:
         )
 
     def _set_reputation(self, tie_client, filename, level, md5, sha1, sha256, sandbox):
-        tie_client.set_external_file_reputation(
-            level,
-            {"md5": md5, "sha1:": sha1, "sha256": sha256},
-            filename=filename,
-            comment="External Reputation set from {}".format(sandbox),
+        
+        tie_client.set_external_file_reputation( 
+            level,    
+            {HashType.MD5: md5, HashType.SHA1: sha1, HashType.SHA256: sha256},    
+            filename=filename,  
+            comment="External Reputation set from {}".format(sandbox)
         )
+
         logging.info(
             "SUCCESS setting the reputation in TIE for SHA256 %s to level %s using sandbox %s",
             str(sha256),
